@@ -7,7 +7,8 @@ This repository houses the Keras model and scripts utilized to train a binary cl
 - `normalizador.py`: Handles image normalization and dataset organization.
 - `training.py`: Main script for model training.
 - `prueba_modelo.py`: Tests the trained model and sorts images into corresponding folders.
-- `fox_detector_model.keras`: The trained model file.
+- `fox_detector_model.keras`: Due to file size limitations on GitHub, the trained model file is hosted on Google Drive. You can access and download it [here](https://drive.google.com/file/d/1IpDU7fCJNW0iV9jDn4H6YxVE9f7hwKdY/view?usp=sharing).
+
 
 ## Detailed Steps
 
