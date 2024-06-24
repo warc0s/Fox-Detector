@@ -24,7 +24,5 @@ Handled by `normalizador.py`, this step involved resizing all images to 300x300 
 ### Step 4: Model Testing and Usage
 The `prueba_modelo.py` script applies the trained model to new images, classifying them into 'si_zorros' or 'no_zorros' based on their predicted categories. This phase highlighted the model’s practical application and provided insight into its performance and reliability in real-world scenarios.
 
-## Conclusion
-Through each phase of this project, from data preprocessing through to the final testing, practical insights were gained into fine-tuning convolutional neural networks and the critical steps necessary for developing a robust classifier.
-
-Explore the provided scripts and the trained model to gain deeper insights into the specific techniques and strategies employed in this project.
+## Final Thoughts
+This project was a comprehensive journey through the lifecycle of a machine learning model, from the meticulous preparation of data to the strategic adjustments during training and the final evaluations. Each step reinforced the importance of thoughtful data handling, creative problem-solving, and rigorous testing in building an effective classifier.
