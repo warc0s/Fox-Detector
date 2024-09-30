@@ -20,8 +20,8 @@ def process_and_save_image(image_path, output_path, file_names):
         if img.mode == 'P':
             img = img.convert('RGB')
 
-        # Redimensionar a 300x300 sin mantener el aspecto
-        img_resized = img.resize((300, 300), Image.Resampling.LANCZOS)
+        # Redimensionar a 256x256 sin mantener el aspecto
+        img_resized = img.resize((256, 256), Image.Resampling.LANCZOS)
 
         # Verificar si el nombre de archivo ya existe y modificarlo si es necesario
         base_name, extension = os.path.splitext(output_path)
