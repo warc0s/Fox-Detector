@@ -1,148 +1,64 @@
-# Fox-Detector
+# Fox-Detector 🦊
 
-**A Keras-Based Binary Classifier Utilizing a Fine-Tuned DenseNet121 Model to Differentiate Between Fox and Non-Fox Images**
-
----
-
-## Table of Contents
-
-- [Introduction](#introduction)
-- [Overview of Files](#overview-of-files)
-- [Detailed Workflow](#detailed-workflow)
-  - [1. Data Collection and Organization](#1-data-collection-and-organization)
-  - [2. Image Normalization](#2-image-normalization)
-  - [3. Model Training](#3-model-training)
-  - [4. Model Testing and Deployment](#4-model-testing-and-deployment)
-- [Final Thoughts](#final-thoughts)
-- [Getting Started](#getting-started)
-- [License](#license)
+**A Keras-Based Binary Classifier That Leverages a Fine-Tuned DenseNet121 Model to Distinguish Fox Images from Non-Fox Images**
 
 ---
 
 ## Introduction
 
-The **Fox-Detector** project is a comprehensive machine learning pipeline designed to accurately distinguish images of foxes from those of other animals. Leveraging the power of Keras and the robust DenseNet121 architecture, this binary classifier exemplifies the effective application of deep learning techniques in image classification tasks. The project encompasses data preparation, model training, evaluation, and deployment, providing a holistic approach to building reliable machine learning models.
+Fox-Detector is my very first foray into the world of deep learning and computer vision. This project demonstrates a complete machine learning pipeline—from data preparation to model deployment—using Keras and the powerful DenseNet121 architecture. While I've worked hard to implement best practices and robust techniques, please note that some parts of this application might not be fully optimized.
 
 ---
 
-## Overview of Files
+## Workflow Overview
 
-- **`normalizador.py`**: 
-  - *Purpose*: Handles image normalization, resizing, and dataset organization.
-  - *Functionality*: Processes raw images, ensuring consistency in size and format, and generates a structured CSV file for easy data handling during training.
+### 1. Data Collection & Organization 📸
 
-- **`training.py`**: 
-  - *Purpose*: Serves as the main script for training the binary classification model.
-  - *Functionality*: Implements data augmentation, model architecture setup, training routines with callbacks for optimization, and saves the trained model for future use.
+- **Diverse Sourcing:** I collected a variety of images featuring both foxes and other subjects from public datasets and online sources.
+- **Clear Categorization:** The images are divided into two classes:
+  - **Foxes** (labeled as `1`)
+  - **Non-Foxes** (labeled as `0`)
 
-- **`prueba_modelo.py`**: 
-  - *Purpose*: Tests the trained model on new images and organizes them based on predictions.
-  - *Functionality*: Loads the trained model, processes incoming images, classifies them, and sorts them into designated folders according to the predicted category.
-
-- **`fox_detector_model.keras`**: 
-  - *Description*: The trained Keras model file. Due to GitHub's file size limitations, the model is hosted on [Google Drive](https://drive.google.com/file/d/1IpDU7fCJNW0iV9jDn4H6YxVE9f7hwKdY/view?usp=sharing) for easy access and download.
+This organization ensures that the model trains on correctly labeled data, which is crucial for building a reliable classifier.
 
 ---
 
-## Detailed Workflow
+### 2. Image Normalization & Preparation 🖼️
 
-### 1. Data Collection and Organization
+- **Consistent Sizing:** Each image is resized to **256x256 pixels** to match the model’s input requirements.
+- **Color Standardization:** All images are converted to **RGB** format, preserving essential visual details.
+- **Quality Preservation:** Images are saved with 95% quality to maintain important features.
+- **CSV Dataset Generation:** A `dataset.csv` file is created to map each image to its label, streamlining the data loading process during training.
 
-**Rationale:**
-A well-structured dataset is foundational to training an effective machine learning model. The initial step involves sourcing images of foxes and non-fox animals from platforms like Kaggle and the internet. 
-
-**Process:**
-- **Source Acquisition**: Gather a diverse set of images to ensure the model learns to recognize foxes across various environments, poses, and lighting conditions.
-- **Categorization**: Systematically sort the images into two primary categories:
-  - `si_zorros` (images containing foxes)
-  - `no_zorros` (images without foxes)
-
-**Importance:**
-Organizing data into clear categories ensures that the model receives accurate labels during training, which is critical for supervised learning tasks. This categorization also facilitates balanced training, reducing potential biases.
-
-### 2. Image Normalization
-
-**Rationale:**
-Consistency in image size and format is crucial for model performance. Normalization ensures that all input data adheres to the expected specifications of the neural network, enhancing training efficiency and accuracy.
-
-**Process:**
-Handled by `normalizador.py`, this step involves:
-- **Resizing**: All images are resized to **256x256 pixels** to maintain uniformity, which simplifies the computational complexity and ensures compatibility with the DenseNet121 architecture.
-- **Color Conversion**: Images are converted to **RGB** format, as pre-trained models like DenseNet121 are trained on three-channel color images.
-- **Quality Enhancement**: Images are saved with high quality (95%) to preserve important features that aid in accurate classification.
-- **Dataset Compilation**: A `dataset.csv` file is generated, cataloging each image's filename and corresponding label (1 for foxes, 0 for non-foxes). This CSV serves as the blueprint for data loading during training.
-
-**Importance:**
-Standardizing image dimensions and formats eliminates discrepancies that could hinder the learning process. Additionally, maintaining image quality ensures that the model has access to all relevant features necessary for accurate predictions.
-
-### 3. Model Training
-
-**Rationale:**
-Training a robust model requires leveraging advanced architectures and implementing strategies to enhance generalization while preventing overfitting.
-
-**Process:**
-Executed via `training.py`, this step encompasses:
-- **Architecture Selection**: Utilizes the **DenseNet121** model, renowned for its efficient parameter usage and strong performance in image classification tasks. DenseNet121's dense connectivity facilitates feature reuse and gradient flow, enhancing learning efficiency.
-  
-- **Data Augmentation**: Implements various augmentation techniques using `ImageDataGenerator` to artificially expand the dataset, improving the model's ability to generalize to unseen data. Techniques include:
-  - **Rotation**, **Width/Height Shifts**, **Shear**, **Horizontal Flip**, and **Brightness Adjustments**.
-  
-- **Dataset Balancing**: Addresses class imbalance through **oversampling** of the minority class (fox images), ensuring that the model does not become biased towards the majority class.
-  
-- **Model Customization**:
-  - **Global Average Pooling**: Reduces the spatial dimensions of the feature maps, lowering the number of parameters and mitigating overfitting.
-  - **Dense Layers**: Adds fully connected layers with **ReLU** activation to learn complex patterns.
-  - **Dropout**: Incorporates a **Dropout** layer with a rate of 0.5 to prevent overfitting by randomly disabling neurons during training.
-  - **Output Layer**: Utilizes a **sigmoid** activation function for binary classification.
-  
-- **Compilation**:
-  - **Optimizer**: Uses the **Adam** optimizer with a learning rate of 0.0001 for efficient gradient-based optimization.
-  - **Loss Function**: Employs **binary cross-entropy** suitable for binary classification tasks.
-  - **Metrics**: Tracks **accuracy** to monitor the model's performance.
-  
-- **Training Enhancements**:
-  - **Early Stopping**: Implements `EarlyStopping` to halt training if the validation loss does not improve for five consecutive epochs, preventing overfitting and reducing unnecessary computations.
-  - **Learning Rate Reduction**: Uses `ReduceLROnPlateau` to decrease the learning rate by a factor of 0.2 if the validation loss plateaus for three epochs, facilitating finer convergence.
-
-- **Model Saving**: After training, the model is saved as `fox_detector_model.keras` for future inference and deployment.
-
-**Importance:**
-Selecting a powerful architecture like DenseNet121, combined with strategic data augmentation and regularization techniques, enhances the model's ability to learn meaningful patterns while maintaining generalizability. Implementing callbacks ensures efficient training and optimal performance.
-
-### 4. Model Testing and Deployment
-
-**Rationale:**
-Testing the model on new, unseen data is essential to evaluate its real-world performance and reliability. Automating the classification and organization of images streamlines the deployment process.
-
-**Process:**
-Managed by `prueba_modelo.py`, this step involves:
-- **Model Loading**: Loads the pre-trained `fox_detector_model.keras` for inference.
-  
-- **Image Processing**:
-  - **Loading and Resizing**: Each image in the `todas_imagenes` directory is loaded and resized to **256x256 pixels**, ensuring consistency with the training data.
-  - **Normalization**: Pixel values are scaled by dividing by 255.0, matching the preprocessing steps applied during training.
-  
-- **Prediction**:
-  - **Inference**: The model predicts the probability of each image containing a fox.
-  - **Classification**: Based on a threshold of 0.5, images are classified as either fox (`si_es_zorro`) or non-fox (`no_es_zorro`).
-  
-- **Organization**:
-  - **File Sorting**: Images are automatically moved to their respective folders (`si_es_zorro` or `no_es_zorro`) based on the prediction outcome.
-  
-- **Error Handling**: Incorporates checks to ensure only valid image files are processed, enhancing the robustness of the script.
-
-**Importance:**
-Automating the classification and organization of images facilitates efficient deployment of the model in practical applications. It allows for seamless integration into workflows where large volumes of images need to be categorized swiftly and accurately.
+This step ensures that the data fed into the network is uniform and optimized for learning.
 
 ---
 
-## Final Thoughts
+### 3. Model Training & Optimization 🚀
 
-Embarking on the **Fox-Detector** project marked my first foray into advanced deep learning, providing an invaluable hands-on experience that significantly deepened my understanding of machine learning principles and practices. Throughout this journey, I navigated the complexities of data preparation, model architecture selection, training optimization, and deployment strategies, each step reinforcing my technical skills and problem-solving abilities.
+- **Architecture:** The project utilizes **DenseNet121** with pre-trained ImageNet weights (excluding the top layers) to leverage robust feature extraction.
+- **Data Augmentation:** Techniques like rotation, shifting, shearing, flipping, and brightness adjustments are applied to enrich the training dataset and improve generalization.
+- **Balancing the Dataset:** Oversampling is used to balance the classes (foxes vs. non-foxes) and reduce bias.
+- **Customized Layers:**
+  - **Global Average Pooling:** Reduces feature map dimensions.
+  - **Dense Layers & Dropout:** Adds fully connected layers with ReLU activation and a 0.5 dropout rate to help prevent overfitting.
+  - **Sigmoid Output:** Produces a probability for binary classification.
+- **Training Enhancements:**
+  - **Early Stopping:** Monitors validation loss to halt training if improvements stop.
+  - **Learning Rate Reduction:** Adjusts the learning rate dynamically to fine-tune convergence.
 
-While I have endeavored to implement best practices and optimize the workflow, I acknowledge that as a beginner in advanced deep learning, there may be areas where the implementation is not as efficient or refined as it could be. I sincerely apologize for any shortcomings and am eager to learn and improve. I wholeheartedly welcome feedback, suggestions, and constructive criticism from the community to enhance the project's effectiveness and my personal growth in this field.
+After training, the model is saved as `fox_detector_model.keras`, ready for inference and deployment.
 
-This project not only serves as a functional classifier but also stands as a testament to the learning curve and the dedication required to master deep learning techniques. I am excited to continue building upon this foundation, exploring more sophisticated models, and tackling increasingly complex challenges in the realm of artificial intelligence.
+---
+
+### 4. Model Testing & Deployment 🏁
+
+- **Automated Inference:** A dedicated script loads the trained model to process new images.
+- **Preprocessing Consistency:** Incoming images are resized and normalized similarly to the training data.
+- **Prediction & Sorting:** Based on a threshold of 0.5, images are classified as either fox or non-fox and then automatically moved into:
+  - `si_es_zorro` (fox images)
+  - `no_es_zorro` (non-fox images)
+- **Seamless Integration:** This automated sorting makes it easier to integrate the classifier into practical workflows.
 
 ---
 
@@ -152,60 +68,68 @@ This project not only serves as a functional classifier but also stands as a tes
 
 Ensure you have the following installed:
 
-- Python 3.7 or higher
-- pip (Python package installer)
+- **Python 3.7+**
+- **pip** (Python package installer)
 
-### Installation
+### Installation Steps
 
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/warc0s/Fox-Detector
+   git clone https://github.com/warc0s/Fox-Detector.git
    cd Fox-Detector
    ```
 
-2. **Create a Virtual Environment**
+2. **Create & Activate a Virtual Environment**
 
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. **Install Dependencies**
+3. **Install Required Packages**
 
    ```bash
    pip install pandas scikit-learn tensorflow Pillow
    ```
 
-### Usage
+---
 
-1. **Data Normalization**
+## Usage Instructions
 
-   Process and organize your images:
+### 1. Normalize & Prepare Your Dataset
 
-   ```bash
-   python normalizador.py
-   ```
+Run the script to resize images, convert them to RGB, and generate a `dataset.csv`:
 
-2. **Model Training**
+```bash
+python normalizador.py
+```
 
-   Train the binary classifier:
+### 2. Train the Model
 
-   ```bash
-   python training.py
-   ```
+Execute the training script to begin model training with data augmentation, early stopping, and learning rate adjustments:
 
-3. **Model Testing and Deployment**
+```bash
+python training.py
+```
 
-   Classify new images and organize them accordingly:
+### 3. Test & Deploy the Model
 
-   ```bash
-   python prueba_modelo.py
-   ```
+After downloading the pre-trained model (if you haven't trained it locally), classify new images placed in the `todas_imagenes` folder:
 
-### Accessing the Trained Model
+```bash
+python prueba_modelo.py
+```
 
-Due to GitHub's file size limitations, the trained model (`fox_detector_model.keras`) is hosted on [Google Drive](https://drive.google.com/file/d/1IpDU7fCJNW0iV9jDn4H6YxVE9f7hwKdY/view?usp=sharing). Download it and place it in the root directory of the project to use with `prueba_modelo.py`.
+*Note: Due to GitHub's file size limitations, the trained model (`fox_detector_model.keras`) is hosted on [Google Drive](https://drive.google.com/file/d/1IpDU7fCJNW0iV9jDn4H6YxVE9f7hwKdY/view?usp=sharing). Download it and place it in the project's root directory.*
+
+---
+
+## Final Thoughts 💡
+
+As my first deep learning and computer vision project, Fox-Detector represents both an achievement and a learning journey. While I’ve strived to implement sound methodologies and robust techniques, there is always room for improvement. I appreciate any constructive feedback and contributions to help enhance this project further.
+
+Happy coding, and enjoy exploring the world of fox detection! 🦊✨
 
 ---
 
